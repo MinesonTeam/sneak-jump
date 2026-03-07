@@ -49,7 +49,7 @@ jobs:
           version-type: alpha
           
           loaders: spigot, paper, purpur
-          game-versions: 1.20.2
+          game-versions: ">=1.8 <=1.21.11"
           files: build/libs/SneakJump-${{ env.version }}.jar
 
       - name: Delete old GitHub dev release
