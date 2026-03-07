@@ -8,10 +8,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.util.Vector;
 
@@ -87,10 +86,5 @@ public class PlayerListener implements Listener {
         velocity.multiply(2);
         velocity.setY(vecY);
         player.setVelocity(velocity);
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        cooldownService.removeCooldown(event.getPlayer().getUniqueId());
     }
 }
