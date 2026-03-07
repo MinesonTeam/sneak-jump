@@ -55,7 +55,7 @@ jobs:
           version-type: release
           
           # Auto-generate changelog from GitHub
-          github-generate-release-notes: true
+          github-generate-changelog: true
           
           # Supported Platforms & Versions
           loaders: bukkit, paper, purpur, spigot
