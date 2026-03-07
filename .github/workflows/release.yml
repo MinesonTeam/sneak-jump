@@ -1,4 +1,4 @@
-name: Create Release
+name: Create Release and Publish
 
 on:
   push:
@@ -11,32 +11,55 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: 'gradle'
+      - name: Set up JDK 17 with Gradle Cache
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Build shadowJar
-      run: ./gradlew clean shadowJar
+      - name: Build shadowJar
+        run: ./gradlew clean shadowJar
 
-    - name: Extract Version from gradle.properties
-      id: get_version
-      run: |
-        VERSION=$(grep "projectVersion=" gradle.properties | cut -d'=' -f2 | tr -d '\r')
-        echo "version=$VERSION" >> $GITHUB_ENV
+      - name: Extract Version from gradle.properties
+        id: get_version
+        run: |
+          VERSION=$(grep "projectVersion=" gradle.properties | cut -d'=' -f2 | tr -d '\r')
+          echo "version=$VERSION" >> $GITHUB_ENV
 
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: v${{ env.version }}
-        name: SneakJump v${{ env.version }}
-        files: build/libs/*.jar
-        generate_release_notes: true
+      - name: Publish to Modrinth, CurseForge, and GitHub
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          # Modrinth Credentials
+          modrinth-id: 'I3xt4C48'
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          # CurseForge Credentials
+          curseforge-id: '1411548'
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          # GitHub Credentials
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Release Metadata
+          name: SneakJump v${{ env.version }}
+          version: ${{ env.version }}
+          version-type: release
+          
+          # Auto-generate changelog from GitHub
+          github-generate-release-notes: true
+          
+          # Supported Platforms & Versions
+          loaders: spigot, paper, purpur
+          game-versions: 1.20.2
+
+          # Path to the compiled jar
+          files: build/libs/SneakJump-${{ env.version }}.jar
