@@ -48,7 +48,7 @@ jobs:
           version: ${{ env.version }}-dev.${{ github.run_number }}
           version-type: alpha
           
-          loaders: spigot, paper, purpur
+          loaders: bukkit, paper, purpur, spigot
           game-versions: ">=1.8 <=1.21.11"
           files: build/libs/SneakJump-${{ env.version }}.jar
 
