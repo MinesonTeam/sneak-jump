@@ -59,7 +59,7 @@ jobs:
           
           # Supported Platforms & Versions
           loaders: spigot, paper, purpur
-          game-versions: 1.20.2
+          game-versions: ">=1.8 <=1.21.11"
 
           # Path to the compiled jar
           files: build/libs/SneakJump-${{ env.version }}.jar
