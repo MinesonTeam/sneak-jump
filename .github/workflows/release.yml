@@ -58,7 +58,7 @@ jobs:
           github-generate-release-notes: true
           
           # Supported Platforms & Versions
-          loaders: spigot, paper, purpur
+          loaders: bukkit, paper, purpur, spigot
           game-versions: ">=1.8 <=1.21.11"
 
           # Path to the compiled jar
