@@ -50,8 +50,11 @@ public class PlayerListener implements Listener {
         }
 
         String permission = config.getPermission();
-        if (permission != null && !permission.isEmpty() && !player.hasPermission(permission)) {
-            return;
+        if (permission != null) {
+            permission = permission.trim();
+            if (!permission.isEmpty() && !player.hasPermission(permission)) {
+                return;
+            }
         }
 
         World world = player.getWorld();
