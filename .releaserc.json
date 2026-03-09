@@ -1,0 +1,14 @@
+{
+  "branches": ["master"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    ["@semantic-release/exec", {
+      "prepareCmd": "sed -i s/projectVersion=.*/projectVersion=${nextRelease.version}/ gradle.properties"
+    }],
+    ["@semantic-release/git", {
+      "assets": ["gradle.properties"],
+      "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+    }]
+  ]
+}
