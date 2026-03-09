@@ -36,6 +36,12 @@ jobs:
           VERSION=$(grep "projectVersion=" gradle.properties | cut -d'=' -f2 | tr -d '\r')
           echo "version=$VERSION" >> $GITHUB_ENV
 
+      - name: Rename JAR to include Build Number
+        run: |
+          for file in build/libs/*.jar; do
+            mv "$file" "${file%.jar}-dev.${{ github.run_number }}.jar"
+          done
+
       - name: Publish Dev Build to Modrinth and CurseForge
         uses: Kir-Antipov/mc-publish@v3.3
         with:
@@ -44,7 +50,7 @@ jobs:
           curseforge-id: '1411548'
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           
-          name: SneakJump ${{ env.version }} (Dev #${{ github.run_number }})
+          name: SneakJump ${{ env.version }} (Dev ${{ github.run_number }})
           
           version: ${{ env.version }}-alpha.${{ github.run_number }}
           version-type: alpha
