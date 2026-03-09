@@ -58,16 +58,10 @@ jobs:
           curseforge-id: '1411548'
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
-          # GitHub Credentials
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
           # Release Metadata
           name: SneakJump v${{ env.version }}
           version: ${{ env.version }}
           version-type: release
-          
-          # Auto-generate changelog from GitHub
-          github-generate-changelog: true
           
           # Supported Platforms & Versions
           loaders: bukkit, paper, purpur, spigot
