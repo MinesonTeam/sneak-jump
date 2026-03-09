@@ -44,7 +44,7 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           
           name: SneakJump Dev Build
-          version: ${{ env.version }}-dev.${{ github.run_number }}
+          version: ${{ github.sha }}
           version-type: alpha
           
           loaders: bukkit, paper, purpur, spigot
