@@ -1,0 +1,72 @@
+name: Build and Publish Plugin (Dev)
+
+on:
+  push:
+    branches: [ "dev" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17 with Gradle Cache
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build shadowJar
+        run: ./gradlew clean shadowJar
+
+      - name: Extract Version from gradle.properties
+        id: get_version
+        run: |
+          VERSION=$(grep "projectVersion=" gradle.properties | cut -d'=' -f2 | tr -d '\r')
+          echo "version=$VERSION" >> $GITHUB_ENV
+
+      - name: Publish Dev Build to Modrinth and CurseForge
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: 'I3xt4C48'
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: '1411548'
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          github-token: ''
+          
+          name: SneakJump Dev Build
+          version: ${{ env.version }}-dev.${{ github.run_number }}
+          version-type: alpha
+          
+          loaders: bukkit, paper, purpur, spigot
+          game-versions: ">=1.8 <=1.21.11"
+          files: build/libs/SneakJump-${{ env.version }}.jar
+
+      - name: Delete old GitHub dev release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete dev-build --cleanup-tag -y || true
+
+      - name: Create Rolling Dev Release in GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dev-build
+          name: 🚧 Development Build (Latest)
+          body: |
+            This is an automatically compiled test version of the plugin from the `dev` branch.
+            It may contain bugs. Updated in commit: ${{ github.sha }}
+            
+            **Build number:** #${{ github.run_number }}
+          prerelease: true
+          files: build/libs/*.jar
