@@ -42,7 +42,6 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           curseforge-id: '1411548'
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-          github-token: ''
           
           name: SneakJump Dev Build
           version: ${{ env.version }}-dev.${{ github.run_number }}
