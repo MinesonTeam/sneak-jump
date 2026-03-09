@@ -49,7 +49,7 @@ jobs:
           
           loaders: bukkit, paper, purpur, spigot
           game-versions: ">=1.8 <=1.21.11"
-          files: build/libs/SneakJump-${{ env.version }}.jar
+          files: build/libs/SneakJump-${{ github.sha }}.jar
 
       - name: Delete old GitHub dev release
         env:
@@ -63,10 +63,6 @@ jobs:
           token: ${{ github.token }}
           tag_name: dev-build
           name: 🚧 Development Build (Latest)
-          body: |
-            This is an automatically compiled test version of the plugin from the `dev` branch.
-            It may contain bugs. Updated in commit: ${{ github.sha }}
-            
-            **Build number:** #${{ github.run_number }}
+          generate_release_notes: true
           prerelease: true
           files: build/libs/*.jar
