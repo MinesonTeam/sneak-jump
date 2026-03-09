@@ -3,6 +3,7 @@ name: Build and Publish Plugin (Dev)
 on:
   push:
     branches: [ "dev" ]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -43,13 +44,15 @@ jobs:
           curseforge-id: '1411548'
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           
-          name: SneakJump Dev Build
-          version: ${{ github.sha }}
+          name: SneakJump ${{ env.version }} (Dev #${{ github.run_number }})
+          
+          version: ${{ env.version }}-alpha.${{ github.run_number }}
           version-type: alpha
           
           loaders: bukkit, paper, purpur, spigot
           game-versions: ">=1.8 <=1.21.11"
-          files: build/libs/SneakJump-${{ github.sha }}.jar
+          
+          files: build/libs/*.jar
 
       - name: Delete old GitHub dev release
         env:
