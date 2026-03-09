@@ -44,16 +44,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if (!config.isEnabled()) {
+        if (!config.isEnabled() || !player.hasPermission(config.getPermission())) {
             return;
-        }
-
-        String permission = config.getPermission();
-        if (permission != null) {
-            permission = permission.trim();
-            if (!permission.isEmpty() && !player.hasPermission(permission)) {
-                return;
-            }
         }
 
         World world = player.getWorld();
