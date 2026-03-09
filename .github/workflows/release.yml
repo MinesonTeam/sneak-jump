@@ -1,0 +1,77 @@
+name: Create Release and Publish
+
+on:
+  push:
+    branches: [ "master" ]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 17 with Gradle Cache
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Setup Node.js (Для Semantic Release)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install -g semantic-release @semantic-release/exec @semantic-release/git
+          semantic-release
+
+      - name: Extract Version from gradle.properties
+        id: get_version
+        run: |
+          VERSION=$(grep "projectVersion=" gradle.properties | cut -d'=' -f2 | tr -d '\r')
+          echo "version=$VERSION" >> $GITHUB_ENV
+      
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build shadowJar
+        run: ./gradlew clean shadowJar
+
+      - name: Publish to Modrinth, CurseForge, and GitHub
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          # Modrinth Credentials
+          modrinth-id: 'I3xt4C48'
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          # CurseForge Credentials
+          curseforge-id: '1411548'
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          # GitHub Credentials
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Release Metadata
+          name: SneakJump v${{ env.version }}
+          version: ${{ env.version }}
+          version-type: release
+          
+          # Auto-generate changelog from GitHub
+          github-generate-changelog: true
+          
+          # Supported Platforms & Versions
+          loaders: bukkit, paper, purpur, spigot
+          game-versions: ">=1.8 <=1.21.11"
+
+          # Path to the compiled jar
+          files: build/libs/SneakJump-${{ env.version }}.jar
