@@ -4,6 +4,10 @@ on:
   pull_request:
     branches: [ "dev" ]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   build-pr:
     runs-on: ubuntu-latest
@@ -25,8 +29,20 @@ jobs:
         run: ./gradlew clean shadowJar
 
       - name: Upload Artifact for Testing
+        id: artifact-upload
         uses: actions/upload-artifact@v4
         with:
           name: SneakJump-PR-${{ github.event.pull_request.number }}
           path: build/libs/*.jar
           retention-days: 7
+
+      - name: Post comment to PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "### 🛠 Test build assembled!
+          
+          Testers can download the finished \`.jar\` file from the link below:
+          📦 [**Download the archive with the plugin**](${{ steps.artifact-upload.outputs.artifact-url }})
+          
+          > *Note: GitHub packs artifacts into \`.zip\`. Don't forget to unpack the archive before uploading it to the \`plugins\` folder.*"
