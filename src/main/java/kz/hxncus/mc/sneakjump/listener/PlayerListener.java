@@ -35,7 +35,6 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJump(PlayerStatisticIncrementEvent event) {
         Statistic statistic = event.getStatistic();
-
         if (statistic != Statistic.JUMP) {
             return;
         }
@@ -62,6 +61,13 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        int height = config.getJumpHeight();
+        double gravity = config.getGravity();
+        double multiplier = config.getMultiplier();
+        if (height <= 1) {
+            return;
+        }
+
         if (cooldownService.isOnCooldown(player.getUniqueId())) {
             ChatMessageType messageType = config.getCooldownMessageType();
             if (messageType == null) {
@@ -69,19 +75,11 @@ public class PlayerListener implements Listener {
             }
             String message = config.getCooldownMessage();
             TextComponent component = new TextComponent(message.replace("{cooldown}",
-                        cooldownService.getCooldown(player.getUniqueId()) + ""));
+                    cooldownService.getCooldown(player.getUniqueId()) + ""));
             player.spigot().sendMessage(messageType, component);
             return;
         }
         cooldownService.setCooldown(player.getUniqueId());
-
-        int height = config.getJumpHeight();
-        double gravity = config.getGravity();
-        double multiplier = config.getMultiplier();
-
-        if (height <= 1) {
-            return;
-        }
 
         double vecY = Math.sqrt(2 * gravity * height);
 
