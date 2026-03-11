@@ -1,0 +1,32 @@
+name: PR Check and Build
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 with Gradle Cache
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build shadowJar
+        run: ./gradlew clean shadowJar
+
+      - name: Upload Artifact for Testing
+        uses: actions/upload-artifact@v4
+        with:
+          name: SneakJump-PR-${{ github.event.pull_request.number }}
+          path: build/libs/*.jar
+          retention-days: 7
