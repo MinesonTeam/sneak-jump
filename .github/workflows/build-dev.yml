@@ -70,7 +70,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           token: ${{ github.token }}
-          tag_name: dev-build
+          tag_name: dev-latest
           name: 🚧 Development Build (Latest)
           generate_release_notes: true
           prerelease: true
