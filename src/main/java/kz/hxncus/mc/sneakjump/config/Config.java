@@ -90,6 +90,19 @@ public class Config {
         return config.getString("energy-message", "§8[§aSneakJump§8] §fYou have {energy} energy left.");
     }
 
+    public ChatMessageType getNoEnergyMessageType() {
+        try {
+            String noEnergyMessageTypeStr = config.getString("no-energy-message-type", "ACTION_BAR").toUpperCase();
+            return ChatMessageType.valueOf(noEnergyMessageTypeStr);
+        } catch (IllegalArgumentException ignored) {
+            return ChatMessageType.ACTION_BAR;
+        }
+    }
+
+    public String getNoEnergyMessage() {
+        return config.getString("no-energy-message", "§8[§aSneakJump§8] §fYou don't have enough energy to sneak jump.");
+    }
+
     public Set<String> getAllowedWorlds() {
         if (allowedWorlds == null) {
             allowedWorlds = new HashSet<>(config.getStringList("allowed-worlds"));

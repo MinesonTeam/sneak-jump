@@ -70,6 +70,8 @@ public class PlayerListener implements Listener {
         }
 
         if (player.getFoodLevel() < config.getFoodCost()) {
+            ChatMessageType noEnergyMessageType = config.getNoEnergyMessageType();
+            player.spigot().sendMessage(noEnergyMessageType, new TextComponent(config.getNoEnergyMessage()));
             return;
         }
 

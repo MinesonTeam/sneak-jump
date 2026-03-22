@@ -68,6 +68,11 @@ energy-message-type: "ACTIONBAR"
 # Message shown after a successful sneak jump, showing remaining energy (hunger + saturation)
 # {energy} replaces with the remaining energy (hunger + saturation)
 energy-message: "§8[§aSneakJump§8] §fYou have §e{energy} §fenergy left."
+# No energy message settings (ACTIONBAR, CHAT, SYSTEM, or nothing)
+# Default: ACTIONBAR
+no-energy-message-type: "ACTIONBAR"
+# Message shown when a player tries to sneak jump without enough energy
+no-energy-message: "§8[§aSneakJump§8] §fYou don't have enough energy to sneak jump."
 # Shows useful commands
 # {0} replaces with a command label
 # /sneakjump help
