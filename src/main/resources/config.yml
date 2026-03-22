@@ -58,19 +58,19 @@ allowed-worlds:
 
 # Cooldown message settings (ACTIONBAR, CHAT, SYSTEM, or nothing)
 # Default: ACTIONBAR
-cooldown-message-type: "ACTIONBAR"
+cooldown-message-type: "ACTION_BAR"
 # Message shown when a player tries to sneak jump while on cooldown
 # {cooldown} replaces with the remaining cooldown time in seconds
 cooldown-message: "§8[§aSneakJump§8] §fWait {cooldown} seconds before jumping again."
 # Energy message settings (ACTIONBAR, CHAT, SYSTEM, or nothing)
 # Default: ACTIONBAR
-energy-message-type: "ACTIONBAR"
+energy-message-type: "ACTION_BAR"
 # Message shown after a successful sneak jump, showing remaining energy (hunger + saturation)
 # {energy} replaces with the remaining energy (hunger + saturation)
 energy-message: "§8[§aSneakJump§8] §fYou have §e{energy} §fenergy left."
 # No energy message settings (ACTIONBAR, CHAT, SYSTEM, or nothing)
 # Default: ACTIONBAR
-no-energy-message-type: "ACTIONBAR"
+no-energy-message-type: "ACTION_BAR"
 # Message shown when a player tries to sneak jump without enough energy
 no-energy-message: "§8[§aSneakJump§8] §fYou don't have enough energy to sneak jump."
 # Shows useful commands
