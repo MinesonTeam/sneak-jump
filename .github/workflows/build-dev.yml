@@ -30,6 +30,12 @@ jobs:
       - name: Build shadowJar
         run: ./gradlew clean shadowJar
 
+      - name: Extract Name from settings.gradle
+        id: get_name
+        run: |
+          NAME=$(grep "rootProject.name" settings.gradle | cut -d'=' -f2 | tr -d " \r'\"")
+          echo "name=$NAME" >> $GITHUB_ENV
+          
       - name: Extract Version from gradle.properties
         id: get_version
         run: |
@@ -42,6 +48,12 @@ jobs:
             mv "$file" "${file%.jar}-dev.${{ github.run_number }}.jar"
           done
 
+      - name: Get Last Commit Message
+        id: last_commit
+        run: |
+          MSG=$(git log -1 --pretty=format:'%s')
+          echo "commit_msg=$MSG" >> $GITHUB_ENV
+
       - name: Publish Dev Build to Modrinth and CurseForge
         uses: Kir-Antipov/mc-publish@v3.3
         with:
@@ -50,7 +62,8 @@ jobs:
           curseforge-id: '1411548'
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           
-          name: SneakJump ${{ env.version }} (Dev ${{ github.run_number }})
+          name: ${{ env.name }} ${{ env.version }} (Dev ${{ github.run_number }})
+          changelog: ${{ env.commit_msg }}
           
           version: ${{ env.version }}-alpha.${{ github.run_number }}
           version-type: alpha
