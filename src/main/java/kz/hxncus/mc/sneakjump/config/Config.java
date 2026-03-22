@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -79,7 +80,7 @@ public class Config {
 
     public ChatMessageType getEnergyMessageType() {
         try {
-            String energyMessageTypeStr = config.getString("energy-message-type", "ACTION_BAR").toUpperCase();
+            String energyMessageTypeStr = config.getString("energy-message-type", "ACTION_BAR").toUpperCase(Locale.ENGLISH);
             return ChatMessageType.valueOf(energyMessageTypeStr);
         } catch (IllegalArgumentException ignored) {
             return ChatMessageType.ACTION_BAR;
@@ -92,7 +93,7 @@ public class Config {
 
     public ChatMessageType getNoEnergyMessageType() {
         try {
-            String noEnergyMessageTypeStr = config.getString("no-energy-message-type", "ACTION_BAR").toUpperCase();
+            String noEnergyMessageTypeStr = config.getString("no-energy-message-type", "ACTION_BAR").toUpperCase(Locale.ENGLISH);
             return ChatMessageType.valueOf(noEnergyMessageTypeStr);
         } catch (IllegalArgumentException ignored) {
             return ChatMessageType.ACTION_BAR;
