@@ -64,19 +64,24 @@ public class PlayerListener implements Listener {
         int height = config.getJumpHeight();
         double gravity = config.getGravity();
         double multiplier = config.getMultiplier();
+
         if (height <= 1) {
             return;
         }
 
+        if (player.getFoodLevel() < config.getFoodCost()) {
+            return;
+        }
+
         if (cooldownService.isOnCooldown(player.getUniqueId())) {
-            ChatMessageType messageType = config.getCooldownMessageType();
-            if (messageType == null) {
+            ChatMessageType cooldownMessageType = config.getCooldownMessageType();
+            if (cooldownMessageType == null) {
                 return;
             }
             String message = config.getCooldownMessage();
             TextComponent component = new TextComponent(message.replace("{cooldown}",
                     String.valueOf((int) Math.ceil(cooldownService.getCooldown(player.getUniqueId()) / 1000D))));
-            player.spigot().sendMessage(messageType, component);
+            player.spigot().sendMessage(cooldownMessageType, component);
             return;
         }
         cooldownService.setCooldown(player.getUniqueId());
@@ -93,6 +98,27 @@ public class PlayerListener implements Listener {
         velocity.multiply(2);
         velocity.setY(vecY);
         player.setVelocity(velocity);
+
+        int foodCost = config.getFoodCost();
+        float saturationCost = config.getSaturationCost();
+        float currentSaturation = player.getSaturation();
+
+        if (currentSaturation > 0 && config.isSaturationFirst()) {
+            if (currentSaturation >= foodCost) {
+                player.setSaturation(currentSaturation - saturationCost);
+            } else {
+                player.setSaturation(0F);
+
+                int remainingCost = (int) (saturationCost - currentSaturation);
+                player.setFoodLevel(Math.max(0, player.getFoodLevel() - remainingCost));
+            }
+        } else {
+            player.setFoodLevel(Math.max(0, player.getFoodLevel() - foodCost));
+        }
+
+        ChatMessageType energyMessageType = config.getEnergyMessageType();
+        String energyMessage = config.getEnergyMessage();
+        player.spigot().sendMessage(energyMessageType, new TextComponent(energyMessage.replace("{energy}", String.valueOf(player.getFoodLevel() + player.getSaturation()))));
     }
 
     @EventHandler

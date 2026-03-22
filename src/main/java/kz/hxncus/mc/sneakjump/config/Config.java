@@ -53,6 +53,18 @@ public class Config {
         return config.getLong("cooldown", 3000);
     }
 
+    public int getFoodCost() {
+        return config.getInt("food-cost", 1);
+    }
+
+    public boolean isSaturationFirst() {
+        return config.getBoolean("saturation-first", true);
+    }
+
+    public float getSaturationCost() {
+        return (float) config.getDouble("saturation-cost", 1.0D);
+    }
+
     public ChatMessageType getCooldownMessageType() {
         try {
             return ChatMessageType.valueOf(config.getString("cooldown-message-type"));
@@ -63,6 +75,19 @@ public class Config {
 
     public String getCooldownMessage() {
         return config.getString("cooldown-message");
+    }
+
+    public ChatMessageType getEnergyMessageType() {
+        try {
+            String energyMessageTypeStr = config.getString("energy-message-type", "ACTION_BAR").toUpperCase();
+            return ChatMessageType.valueOf(energyMessageTypeStr);
+        } catch (IllegalArgumentException ignored) {
+            return ChatMessageType.ACTION_BAR;
+        }
+    }
+
+    public String getEnergyMessage() {
+        return config.getString("energy-message", "§8[§aSneakJump§8] §fYou have {energy} energy left.");
     }
 
     public Set<String> getAllowedWorlds() {

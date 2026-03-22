@@ -38,6 +38,16 @@ multiplier: 0.997
 # Cooldown between jumps in milliseconds
 # Default: 3000 milliseconds (3 seconds)
 cooldown: 3000
+# Food cost for performing a sneak jump (in food points, where 1 point = 0.5 food)
+# 0 to disable food cost
+# Default: 1 (0.5 hunger)
+food-cost: 1
+# If true, the plugin will use saturation first instead of hunger when performing a sneak jump
+# Default: true
+saturation-first: true
+# If saturation-first is true, this is the saturation cost for performing a sneak jump
+# Default: 1.0
+saturation-cost: 1.0
 # List of worlds where SneakJump is active
 # Only players in these worlds will be able to sneak and jump
 # Default: ["world", "world_nether", "world_the_end"]
@@ -52,6 +62,12 @@ cooldown-message-type: "ACTIONBAR"
 # Message shown when a player tries to sneak jump while on cooldown
 # {cooldown} replaces with the remaining cooldown time in seconds
 cooldown-message: "§8[§aSneakJump§8] §fWait {cooldown} seconds before jumping again."
+# Energy message settings (ACTIONBAR, CHAT, SYSTEM, or nothing)
+# Default: ACTIONBAR
+energy-message-type: "ACTIONBAR"
+# Message shown after a successful sneak jump, showing remaining energy (hunger + saturation)
+# {energy} replaces with the remaining energy (hunger + saturation)
+energy-message: "§8[§aSneakJump§8] §fYou have §e{energy} §fenergy left."
 # Shows useful commands
 # {0} replaces with a command label
 # /sneakjump help
