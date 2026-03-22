@@ -35,6 +35,12 @@ jobs:
           npm install -g semantic-release @semantic-release/exec @semantic-release/git
           semantic-release
 
+      - name: Extract Name from settings.gradle
+        id: get_name
+        run: |
+          NAME=$(grep "rootProject.name" settings.gradle | cut -d'=' -f2 | tr -d " \r'\"")
+          echo "name=$NAME" >> $GITHUB_ENV
+
       - name: Extract Version from gradle.properties
         id: get_version
         run: |
@@ -59,7 +65,7 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           # Release Metadata
-          name: SneakJump v${{ env.version }}
+          name: ${{ env.name }} v${{ env.version }}
           version: ${{ env.version }}
           version-type: release
           
@@ -68,4 +74,4 @@ jobs:
           game-versions: ">=1.8 <=1.21.11"
 
           # Path to the compiled jar
-          files: build/libs/SneakJump-${{ env.version }}.jar
+          files: build/libs/${{ env.name }}-${{ env.version }}.jar
