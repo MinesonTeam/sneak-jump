@@ -75,7 +75,7 @@ public class PlayerListener implements Listener {
             }
             String message = config.getCooldownMessage();
             TextComponent component = new TextComponent(message.replace("{cooldown}",
-                    cooldownService.getCooldown(player.getUniqueId()) + ""));
+                    String.valueOf((int) Math.ceil(cooldownService.getCooldown(player.getUniqueId()) / 1000D))));
             player.spigot().sendMessage(messageType, component);
             return;
         }
