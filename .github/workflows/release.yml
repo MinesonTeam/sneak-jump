@@ -46,6 +46,15 @@ jobs:
         run: |
           VERSION=$(grep "projectVersion=" gradle.properties | cut -d'=' -f2 | tr -d '\r')
           echo "version=$VERSION" >> $GITHUB_ENV
+
+      - name: Fetch Changelog from GitHub
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EOF=$(cat /proc/sys/kernel/random/uuid)
+          echo "CHANGELOG<<$EOF" >> $GITHUB_ENV
+          gh release view v${{ env.version }} --json body -q .body >> $GITHUB_ENV
+          echo "$EOF" >> $GITHUB_ENV
       
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
