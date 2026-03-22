@@ -6,6 +6,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -53,6 +54,18 @@ public class Config {
         return config.getLong("cooldown", 3000);
     }
 
+    public int getFoodCost() {
+        return config.getInt("food-cost", 1);
+    }
+
+    public boolean isSaturationFirst() {
+        return config.getBoolean("saturation-first", true);
+    }
+
+    public float getSaturationCost() {
+        return (float) config.getDouble("saturation-cost", 1.0D);
+    }
+
     public ChatMessageType getCooldownMessageType() {
         try {
             return ChatMessageType.valueOf(config.getString("cooldown-message-type"));
@@ -63,6 +76,32 @@ public class Config {
 
     public String getCooldownMessage() {
         return config.getString("cooldown-message");
+    }
+
+    public ChatMessageType getEnergyMessageType() {
+        try {
+            String energyMessageTypeStr = config.getString("energy-message-type", "ACTION_BAR").toUpperCase(Locale.ENGLISH);
+            return ChatMessageType.valueOf(energyMessageTypeStr);
+        } catch (IllegalArgumentException ignored) {
+            return ChatMessageType.ACTION_BAR;
+        }
+    }
+
+    public String getEnergyMessage() {
+        return config.getString("energy-message", "§8[§aSneakJump§8] §fYou have {energy} energy left.");
+    }
+
+    public ChatMessageType getNoEnergyMessageType() {
+        try {
+            String noEnergyMessageTypeStr = config.getString("no-energy-message-type", "ACTION_BAR").toUpperCase(Locale.ENGLISH);
+            return ChatMessageType.valueOf(noEnergyMessageTypeStr);
+        } catch (IllegalArgumentException ignored) {
+            return ChatMessageType.ACTION_BAR;
+        }
+    }
+
+    public String getNoEnergyMessage() {
+        return config.getString("no-energy-message", "§8[§aSneakJump§8] §fYou don't have enough energy to sneak jump.");
     }
 
     public Set<String> getAllowedWorlds() {
