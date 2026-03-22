@@ -69,7 +69,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if (player.getFoodLevel() < config.getFoodCost()) {
+        if (player.getFoodLevel() < config.getFoodCost() && player.getSaturation() < config.getSaturationCost()) {
             ChatMessageType noEnergyMessageType = config.getNoEnergyMessageType();
             player.spigot().sendMessage(noEnergyMessageType, new TextComponent(config.getNoEnergyMessage()));
             return;
@@ -105,15 +105,8 @@ public class PlayerListener implements Listener {
         float saturationCost = config.getSaturationCost();
         float currentSaturation = player.getSaturation();
 
-        if (currentSaturation > 0 && config.isSaturationFirst()) {
-            if (currentSaturation >= foodCost) {
-                player.setSaturation(currentSaturation - saturationCost);
-            } else {
-                player.setSaturation(0F);
-
-                int remainingCost = (int) (saturationCost - currentSaturation);
-                player.setFoodLevel(Math.max(0, player.getFoodLevel() - remainingCost));
-            }
+        if (currentSaturation > saturationCost && config.isSaturationFirst()) {
+            player.setSaturation(Math.max(0, currentSaturation - saturationCost));
         } else {
             player.setFoodLevel(Math.max(0, player.getFoodLevel() - foodCost));
         }
