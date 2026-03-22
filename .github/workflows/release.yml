@@ -66,6 +66,8 @@ jobs:
 
           # Release Metadata
           name: ${{ env.name }} v${{ env.version }}
+          changelog: ${{ env.CHANGELOG }}
+          
           version: ${{ env.version }}
           version-type: release
           
