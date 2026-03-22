@@ -62,7 +62,7 @@ jobs:
           curseforge-id: '1411548'
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
           
-          name: ${{ env.name }} ${{ env.version }} (Dev ${{ github.run_number }})
+          name: ${{ env.name }} v${{ env.version }} (Dev ${{ github.run_number }})
           changelog: ${{ env.commit_msg }}
           
           version: ${{ env.version }}-alpha.${{ github.run_number }}
