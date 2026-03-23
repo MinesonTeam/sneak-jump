@@ -131,7 +131,7 @@ public class PlayerListener implements Listener {
         if (config.isParticleEffectEnabled()) {
             world.spawnParticle(
                     config.getParticleEffectType(),
-                    location.add(config.getParticleEffectSpawnOffsetX(),
+                    location.clone().add(config.getParticleEffectSpawnOffsetX(),
                             config.getParticleEffectSpawnOffsetY(),
                             config.getParticleEffectSpawnOffsetZ()),
                     config.getParticleEffectCount(),
