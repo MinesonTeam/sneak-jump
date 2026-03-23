@@ -65,12 +65,14 @@ public class PlayerListener implements Listener {
         if (player.getFoodLevel() < config.getFoodCost() && (config.isSaturationFirst() && player.getSaturation() < config.getSaturationCost())) {
             ChatMessageType noEnergyMessageType = config.getNoEnergyMessageType();
             player.spigot().sendMessage(noEnergyMessageType, new TextComponent(config.getNoEnergyMessage()));
-            world.playSound(
-                    location,
-                    config.getErrorSoundEffect(),
-                    config.getErrorSoundEffectVolume(),
-                    config.getErrorSoundEffectPitch()
-            );
+            if (config.isEffectsEnabled() && config.isErrorSoundEffectEnabled()) {
+                world.playSound(
+                        location,
+                        config.getErrorSoundEffect(),
+                        config.getErrorSoundEffectVolume(),
+                        config.getErrorSoundEffectPitch()
+                );
+            }
             return;
         }
 
@@ -83,12 +85,14 @@ public class PlayerListener implements Listener {
             TextComponent component = new TextComponent(message.replace("{cooldown}",
                     String.valueOf((int) Math.ceil(cooldownService.getCooldown(player.getUniqueId()) / 1000D))));
             player.spigot().sendMessage(cooldownMessageType, component);
-            world.playSound(
-                    location,
-                    config.getErrorSoundEffect(),
-                    config.getErrorSoundEffectVolume(),
-                    config.getErrorSoundEffectPitch()
-            );
+            if (config.isEffectsEnabled() && config.isErrorSoundEffectEnabled()) {
+                world.playSound(
+                        location,
+                        config.getErrorSoundEffect(),
+                        config.getErrorSoundEffectVolume(),
+                        config.getErrorSoundEffectPitch()
+                );
+            }
             return;
         }
         cooldownService.setCooldown(player.getUniqueId());
