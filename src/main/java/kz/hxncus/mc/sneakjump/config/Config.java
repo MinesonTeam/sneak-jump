@@ -70,7 +70,7 @@ public class Config {
 
     public Sound getSoundEffect() {
         try {
-            String soundEffectStr = config.getString("effects.sound.type", "ENTITY_BAT_TAKEOFF").toUpperCase(Locale.ENGLISH);
+            String soundEffectStr = config.getString("effects.sound.sound", "ENTITY_BAT_TAKEOFF").toUpperCase(Locale.ENGLISH);
             return Sound.valueOf(soundEffectStr);
         } catch (IllegalArgumentException ignored) {
             return Sound.ENTITY_BAT_TAKEOFF;
@@ -91,7 +91,7 @@ public class Config {
 
     public Sound getErrorSoundEffect() {
         try {
-            String errorSoundEffectStr = config.getString("effects.error-sound.type", "ENTITY_VILLAGER_NO").toUpperCase(Locale.ENGLISH);
+            String errorSoundEffectStr = config.getString("effects.error-sound.sound", "ENTITY_VILLAGER_NO").toUpperCase(Locale.ENGLISH);
             return Sound.valueOf(errorSoundEffectStr);
         } catch (IllegalArgumentException ignored) {
             return Sound.ENTITY_VILLAGER_NO;
