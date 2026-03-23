@@ -161,7 +161,8 @@ public class Config {
 
     public ChatMessageType getCooldownMessageType() {
         try {
-            return ChatMessageType.valueOf(config.getString("cooldown-message-type"));
+            String cooldownMessageTypeStr = config.getString("cooldown-message-type", "ACTION_BAR").toUpperCase(Locale.ENGLISH);
+            return ChatMessageType.valueOf(cooldownMessageTypeStr);
         } catch (IllegalArgumentException ignored) {
             return ChatMessageType.ACTION_BAR;
         }
