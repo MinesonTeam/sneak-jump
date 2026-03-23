@@ -9,9 +9,9 @@ import org.bukkit.Location;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.util.Vector;
 
@@ -62,7 +62,7 @@ public class PlayerListener implements Listener {
         }
 
         Location location = player.getLocation();
-        if (player.getFoodLevel() < config.getFoodCost() && player.getSaturation() < config.getSaturationCost()) {
+        if (player.getFoodLevel() < config.getFoodCost() && (config.isSaturationFirst() && player.getSaturation() < config.getSaturationCost())) {
             ChatMessageType noEnergyMessageType = config.getNoEnergyMessageType();
             player.spigot().sendMessage(noEnergyMessageType, new TextComponent(config.getNoEnergyMessage()));
             world.playSound(
