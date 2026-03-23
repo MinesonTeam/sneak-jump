@@ -5,6 +5,7 @@ import kz.hxncus.mc.sneakjump.config.Config;
 import kz.hxncus.mc.sneakjump.cooldown.CooldownService;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Location;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -69,9 +70,16 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        Location location = player.getLocation();
         if (player.getFoodLevel() < config.getFoodCost() && player.getSaturation() < config.getSaturationCost()) {
             ChatMessageType noEnergyMessageType = config.getNoEnergyMessageType();
             player.spigot().sendMessage(noEnergyMessageType, new TextComponent(config.getNoEnergyMessage()));
+            world.playSound(
+                    location,
+                    config.getErrorSoundEffect(),
+                    config.getErrorSoundEffectVolume(),
+                    config.getErrorSoundEffectPitch()
+            );
             return;
         }
 
@@ -84,6 +92,12 @@ public class PlayerListener implements Listener {
             TextComponent component = new TextComponent(message.replace("{cooldown}",
                     String.valueOf((int) Math.ceil(cooldownService.getCooldown(player.getUniqueId()) / 1000D))));
             player.spigot().sendMessage(cooldownMessageType, component);
+            world.playSound(
+                    location,
+                    config.getErrorSoundEffect(),
+                    config.getErrorSoundEffectVolume(),
+                    config.getErrorSoundEffectPitch()
+            );
             return;
         }
         cooldownService.setCooldown(player.getUniqueId());
@@ -114,6 +128,32 @@ public class PlayerListener implements Listener {
         ChatMessageType energyMessageType = config.getEnergyMessageType();
         String energyMessage = config.getEnergyMessage();
         player.spigot().sendMessage(energyMessageType, new TextComponent(energyMessage.replace("{energy}", String.valueOf(player.getFoodLevel() + player.getSaturation()))));
+
+        if (!config.isEffectsEnabled()) {
+            return;
+        }
+
+        if (config.isParticleEffectEnabled()) {
+            world.spawnParticle(
+                    config.getParticleEffectType(),
+                    location.add(config.getParticleEffectSpawnOffsetX(),
+                            config.getParticleEffectSpawnOffsetY(),
+                            config.getParticleEffectSpawnOffsetZ()),
+                    config.getParticleEffectCount(),
+                    config.getParticleEffectOffsetX(),
+                    config.getParticleEffectOffsetY(),
+                    config.getParticleEffectOffsetZ(),
+                    config.getParticleEffectExtra()
+            );
+        }
+        if (config.isSoundEffectEnabled()) {
+            world.playSound(
+                    location,
+                    config.getSoundEffect(),
+                    config.getSoundEffectVolume(),
+                    config.getSoundEffectPitch()
+            );
+        }
     }
 
     @EventHandler
