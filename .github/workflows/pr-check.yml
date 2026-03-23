@@ -1,0 +1,60 @@
+name: PR Check and Build
+
+on:
+  pull_request:
+    branches: [ "dev" ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17 with Gradle Cache
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build shadowJar
+        run: ./gradlew clean shadowJar
+
+      - name: Extract Name from settings.gradle
+        id: get_name
+        run: |
+          NAME=$(grep "rootProject.name" settings.gradle | cut -d'=' -f2 | tr -d " \r'\"")
+          echo "name=$NAME" >> $GITHUB_ENV
+
+      - name: Extract Version from gradle.properties
+        id: get_version
+        run: |
+          VERSION=$(grep "projectVersion=" gradle.properties | cut -d'=' -f2 | tr -d '\r')
+          echo "version=$VERSION" >> $GITHUB_ENV
+
+      - name: Upload Artifact for Testing
+        id: artifact-upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.name }}-${{ env.version }}-PR-${{ github.event.pull_request.number }}
+          path: build/libs/*.jar
+          retention-days: 7
+
+      - name: Post comment to PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.number }} --body "### 🛠 Test build ${{ env.name }}-${{ env.version }}-PR-${{ github.event.pull_request.number }} assembled!
+          
+          Testers can download the finished \`.jar\` file from the link below:
+          📦 [**Download the archive with the plugin**](${{ steps.artifact-upload.outputs.artifact-url }})
+          
+          > *Note: GitHub packs artifacts into \`.zip\`. Don't forget to unpack the archive before uploading it to the \`plugins\` folder.*"

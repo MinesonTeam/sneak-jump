@@ -29,15 +29,53 @@ permission: ""
 # Minecraft gravity approximation used in jump calculation
 # Default: 0.0882
 gravity: 0.0882
-# How many blocks high the player should jump when sneaking
-# Default: 2, Maximum: 61 blocks (Minecraft limit, maybe I will fix it in the future...)
-jump-height: 2
 # Multiplier applied to vertical velocity each tick
 # Default: 0.997
 multiplier: 0.997
+# How many blocks high the player should jump when sneaking
+# Default: 2, Maximum: 61 blocks (Minecraft limit, maybe I will fix it in the future...)
+jump-height: 2
 # Cooldown between jumps in milliseconds
 # Default: 3000 milliseconds (3 seconds)
 cooldown: 3000
+# Effects played when performing a sneak jump
+effects:
+  enabled: true
+  # Sound settings for sneak jump effects
+  sound:
+    enabled: true
+    sound: "ENTITY_BAT_TAKEOFF"
+    volume: 0.5
+    pitch: 1.0
+  error-sound:
+    enabled: true
+    sound: "ENTITY_VILLAGER_NO"
+    volume: 0.5
+    pitch: 1.0
+  # Particle settings for sneak jump effects
+  particle:
+    enabled: true
+    type: CLOUD
+    count: 5
+    extra: 0
+    spawn-offset:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+    offset:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+# Food cost for performing a sneak jump (in food points, where 1 point = 0.5 food)
+# 0 to disable food cost
+# Default: 1 (0.5 hunger)
+food-cost: 1
+# If true, the plugin will use saturation first instead of hunger when performing a sneak jump
+# Default: true
+saturation-first: true
+# If saturation-first is true, this is the saturation cost for performing a sneak jump
+# Default: 1.0
+saturation-cost: 1.0
 # List of worlds where SneakJump is active
 # Only players in these worlds will be able to sneak and jump
 # Default: ["world", "world_nether", "world_the_end"]
@@ -48,8 +86,21 @@ allowed-worlds:
 
 # Cooldown message settings (ACTIONBAR, CHAT, SYSTEM, or nothing)
 # Default: ACTIONBAR
-cooldown-message-type: "ACTIONBAR"
-cooldown-message: "§8[§aSneakJump§8] §fWait {cooldown} milliseconds before jumping again."
+cooldown-message-type: "ACTION_BAR"
+# Message shown when a player tries to sneak jump while on cooldown
+# {cooldown} replaces with the remaining cooldown time in seconds
+cooldown-message: "§8[§aSneakJump§8] §fWait {cooldown} seconds before jumping again."
+# Energy message settings (ACTIONBAR, CHAT, SYSTEM, or nothing)
+# Default: ACTIONBAR
+energy-message-type: "ACTION_BAR"
+# Message shown after a successful sneak jump, showing remaining energy (hunger + saturation)
+# {energy} replaces with the remaining energy (hunger + saturation)
+energy-message: "§8[§aSneakJump§8] §fYou have §e{energy} §fenergy left."
+# No energy message settings (ACTIONBAR, CHAT, SYSTEM, or nothing)
+# Default: ACTIONBAR
+no-energy-message-type: "ACTION_BAR"
+# Message shown when a player tries to sneak jump without enough energy
+no-energy-message: "§8[§aSneakJump§8] §fYou don't have enough energy to sneak jump."
 # Shows useful commands
 # {0} replaces with a command label
 # /sneakjump help
