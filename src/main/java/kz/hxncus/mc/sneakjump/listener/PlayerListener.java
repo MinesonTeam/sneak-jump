@@ -9,10 +9,9 @@ import org.bukkit.Location;
 import org.bukkit.Statistic;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.util.Vector;
 
@@ -45,16 +44,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if (!config.isEnabled()) {
+        if (!config.isEnabled() || !player.hasPermission(config.getPermission())) {
             return;
-        }
-
-        String permission = config.getPermission();
-        if (permission != null) {
-            permission = permission.trim();
-            if (!permission.isEmpty() && !player.hasPermission(permission)) {
-                return;
-            }
         }
 
         World world = player.getWorld();
@@ -154,10 +145,5 @@ public class PlayerListener implements Listener {
                     config.getSoundEffectPitch()
             );
         }
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        cooldownService.removeCooldown(event.getPlayer().getUniqueId());
     }
 }
