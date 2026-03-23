@@ -29,15 +29,43 @@ permission: ""
 # Minecraft gravity approximation used in jump calculation
 # Default: 0.0882
 gravity: 0.0882
-# How many blocks high the player should jump when sneaking
-# Default: 2, Maximum: 61 blocks (Minecraft limit, maybe I will fix it in the future...)
-jump-height: 2
 # Multiplier applied to vertical velocity each tick
 # Default: 0.997
 multiplier: 0.997
+# How many blocks high the player should jump when sneaking
+# Default: 2, Maximum: 61 blocks (Minecraft limit, maybe I will fix it in the future...)
+jump-height: 2
 # Cooldown between jumps in milliseconds
 # Default: 3000 milliseconds (3 seconds)
 cooldown: 3000
+# Effects played when performing a sneak jump
+effects:
+  enabled: true
+  # Sound settings for sneak jump effects
+  sound:
+    enabled: true
+    sound: "ENTITY_BAT_TAKEOFF"
+    volume: 0.5
+    pitch: 1.0
+  error-sound:
+    enabled: true
+    sound: "ENTITY_VILLAGER_NO"
+    volume: 0.5
+    pitch: 1.0
+  # Particle settings for sneak jump effects
+  particle:
+    enabled: true
+    type: CLOUD
+    count: 5
+    extra: 0
+    spawn-offset:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+    offset:
+      x: 0.5
+      y: 0.5
+      z: 0.5
 # Food cost for performing a sneak jump (in food points, where 1 point = 0.5 food)
 # 0 to disable food cost
 # Default: 1 (0.5 hunger)
