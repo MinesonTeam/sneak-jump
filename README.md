@@ -11,3 +11,4 @@ SneakJump strictly adheres to Enterprise coding standards. Every Pull Request is
 * `Grade A` Maintainability & Reliability
 
 We use static application security testing (SAST) to prevent bugs before they reach production.
+
