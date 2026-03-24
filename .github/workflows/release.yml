@@ -88,4 +88,4 @@ jobs:
           game-versions: ">=1.8 <=1.21.11"
 
           # Path to the compiled jar
-          files: build/libs/${{ env.name }}-${{ env.version }}.jar
+          files: build/libs/*.jar
