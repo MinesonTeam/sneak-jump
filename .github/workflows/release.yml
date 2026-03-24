@@ -28,6 +28,9 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Force fetch tags
+        run: git fetch --tags --force
+      
       - name: Run Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
