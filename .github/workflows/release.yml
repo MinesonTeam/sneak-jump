@@ -66,6 +66,12 @@ jobs:
       - name: Build shadowJar
         run: ./gradlew clean shadowJar
 
+      - name: Upload JAR to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload v${{ env.version }} build/libs/*.jar --clobber
+      
       - name: Publish to Modrinth, CurseForge, and GitHub
         uses: Kir-Antipov/mc-publish@v3.3
         with:
@@ -89,4 +95,4 @@ jobs:
           game-versions: ">=1.8 <=1.21.11"
 
           # Path to the compiled jar
-          files: build/libs/${{ env.name }}-${{ env.version }}.jar
+          files: build/libs/*.jar
