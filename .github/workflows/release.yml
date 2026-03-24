@@ -30,7 +30,7 @@ jobs:
 
       - name: Run Semantic Release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
         run: |
           npm install -g semantic-release @semantic-release/exec @semantic-release/git
           semantic-release
